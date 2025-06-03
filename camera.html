@@ -7,7 +7,8 @@
     <button id="take-photo">Take Photo</button>
     <video id="video" autoplay playsinline style="width: 100vw;
         height: 100vh;
-        object-fit: cover;"></video>
+        object-fit: contain; /* Prevents cropping/zoom */
+    background: black;"></video>
     <canvas id="canvas" style="display:none;"></canvas>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
