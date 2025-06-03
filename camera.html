@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Take Photo</title>
+</head>
+<body>
+    <button id="take-photo">Take Photo</button>
+    <video id="video" autoplay playsinline style="width: 100vw;
+        height: 100vh;
+        object-fit: cover;"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let video = document.getElementById('video');
+        let canvas = document.getElementById('canvas');
+
+        $('#take-photo').click(async function () {
+            try {
+                // Ask for camera access
+                const stream = await navigator.mediaDevices.getUserMedia({
+    video: {
+        width: { ideal: 720 },
+        height: { ideal: 1280 },
+        facingMode: 'environment' // Use rear camera on phones
+    }
+});
+                video.srcObject = stream;
+
+                // Wait for user to click again to capture
+                $(this).text('Capture Photo').off('click').click(function () {
+                    // Capture frame
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    canvas.getContext('2d').drawImage(video, 0, 0);
+
+                    // Stop camera
+                    stream.getTracks().forEach(track => track.stop());
+
+                    // Convert canvas to base64
+                    const imageData = canvas.toDataURL('image/jpeg');
+
+                    // Get location
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+
+                        // Send to backend
+                        $.ajax({
+                            url: '/api/upload-photo',
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Optional if using web middleware
+                            },
+                            data: {
+                                photo: imageData,
+                                latitude: lat,
+                                longitude: lon
+                            },
+                            success: function (res) {
+                                alert('Photo and location submitted!');
+                            },
+                            error: function (err) {
+                                alert('Error submitting data.');
+                            }
+                        });
+                    }, function (err) {
+                        alert('Geolocation error: ' + err.message);
+                    });
+                });
+
+            } catch (err) {
+                alert('Camera access denied: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>
