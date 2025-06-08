@@ -6,15 +6,19 @@
 </head>
 <body>
 
-    <div class="container"></div>
-    <button id="take-photo">Take Photo</button>
-    <video id="video" autoplay playsinline style="
+    <div class="container mt-5">
+       <video id="video" autoplay playsinline style="
         width: 100vw;
         height: 90vh;
         object-fit: contain; /* Prevents cropping/zoom */
     background: black;"></video>
-    <canvas id="canvas" style="display:none;"></canvas>
+        <canvas id="canvas" style="display:none;"></canvas>
 
+
+        <button id="take-photo" class="btn btn-black">Take Photo</button>
+        
+    </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     <script>
