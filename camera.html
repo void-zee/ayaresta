@@ -4,18 +4,14 @@
     <title>Take Photo</title>
 </head>
 <body>
-
-    <div>
        <video id="video" autoplay playsinline style="
     width: 100vw;
-    height: 640px;
+    height: 80vh;
     object-fit: contain;
     background: black;"></video>
         <canvas id="canvas" style="display:none;"></canvas>
         <button id="take-photo" class="btn btn-primary">Take Photo</button>
         
-    </div>
-    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         let video = document.getElementById('video');
